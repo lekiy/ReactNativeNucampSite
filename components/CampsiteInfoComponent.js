@@ -46,12 +46,13 @@ function RenderCampsite(props) {
                     {campsite.desciption}
                 </Text>
                 <Icon
-                    name={props.favorate ? 'heart' : 'heart-o'}
+                    name={props.favorite ? 'heart' : 'heart-o'}
                     type='font-awesome'
                     color='#f50'
                     raised
                     reverse
-                    onPress={() => props.favorate ? console.log('Already set as a favorite') : props.markFavorite()}
+                    onPress={() => props.favorite ?
+                         console.log('Already set as a favorite') : props.markFavorite()}
                 />
             </Card>
         )
@@ -64,7 +65,7 @@ class CampsiteInfo extends Component {
     constructor(props){
         super(props);
         this.state = {
-            favorate: false
+            favorite: false
         };
     }
 
@@ -85,7 +86,7 @@ class CampsiteInfo extends Component {
         return (
             <ScrollView>
                 <RenderCampsite campsite={campsite}
-                    favorite={this.state.favorate}
+                    favorite={this.state.favorite}
                     markFavorite={() => this.markFavorite()}
                 />
                 <RenderComments comments={comments} />
