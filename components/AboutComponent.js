@@ -3,6 +3,7 @@ import { ScrollView, Text, FlatList} from 'react-native';
 import { Card, ListItem} from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
     return {
@@ -21,16 +22,52 @@ class About extends Component {
 
     render(){
         const renderPartner = ({item}) => <ListItem 
-                                            title={item.name} 
-                                            subtitle={item.description} 
-                                            leftAvatar={{source: {url: baseUrl + item.image}}}
-                                          />
+                    title={item.name} 
+                    subtitle={item.description} 
+                    leftAvatar={{source: {url: baseUrl + item.image}}}
+                />
+        
 
+        
+
+                /* this is how they do this code in the lessons */
+        // if(this.props.partners.isLoading){
+        //     return (
+        //         <ScrollView>
+        //             <Mission />
+        //             <Card title='Communtiy Partners'>
+        //                 <Loading />
+        //             </Card>
+        //         </ScrollView>
+        //     )
+        // }
+        // if(this.props.partners.errMess){
+        //     return (
+        //         <ScrollView>
+        //             <Mission />
+        //             <Card title='Communtiy Partners'>
+        //                 <Text>{this.props.partners.errMess}</Text>
+        //             </Card>
+        //         </ScrollView>
+        //     )
+        // }
+
+        // This is how I thought to do it//
+        const loading = <Loading />;
+        const error = <Text>{this.props.partners.errMess}</Text>
+
+        const getOutput = () => {
+            if(this.props.partners.isLoading) return loading
+            if(this.props.partners.errMess) return error
+            return <FlatList data={this.props.partners.partners} keyExtractor={item => item.id.toString()} renderItem={renderPartner}></FlatList>
+        }
+
+        console.log(this.props.partners);
         return (
             <ScrollView>
                 <Mission />
                 <Card title="Community Partners">
-                    <FlatList data={this.props.partners.partners} keyExtractor={item => item.id.toString()} renderItem={renderPartner}></FlatList>
+                    {getOutput()}
                 </Card>
             </ScrollView>
         );
