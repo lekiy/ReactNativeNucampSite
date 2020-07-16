@@ -3,6 +3,7 @@ import { ScrollView, Text, FlatList} from 'react-native';
 import { Card, ListItem} from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import * as Animatable from 'react-native-animatable';
 import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
@@ -26,9 +27,6 @@ class About extends Component {
                     subtitle={item.description} 
                     leftAvatar={{source: {uri: baseUrl + item.image}}}
                 />
-        
-
-        
 
                 /* this is how they do this code in the lessons */
         // if(this.props.partners.isLoading){
@@ -65,10 +63,12 @@ class About extends Component {
         console.log(this.props.partners);
         return (
             <ScrollView>
-                <Mission />
-                <Card title="Community Partners">
-                    {getOutput()}
-                </Card>
+                <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                    <Mission />
+                    <Card title="Community Partners">
+                        {getOutput()}
+                    </Card>
+                </Animatable.View>
             </ScrollView>
         );
     }
