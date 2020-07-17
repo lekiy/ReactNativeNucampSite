@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, ScrollView, FlatList, Modal, StyleSheet, Button} from 'react-native';
+import { Text, View, ScrollView, FlatList, Modal, StyleSheet, Button, Alert, PanResponder} from 'react-native';
 import { Card, Icon, Rating, Input} from 'react-native-elements';
 import { postComment} from '../redux/ActionCreators';
 import { postFavorite } from '../redux/ActionCreators';
@@ -45,10 +45,38 @@ function RenderCampsite(props) {
 
     const {campsite} = props;
     const {name, image, desciption} = campsite;
+    const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+    
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderEnd: (e, gestureState) => {
+            console.log('pan responder end', gestureState);
+            if(recognizeDrag(gestureState)) {
+                Alert.alert(
+                    'Add Favorite',
+                    'Are you sure you wish to add ' + campsite.name + ' to favorites?',
+                    [
+                        {
+                            text: 'Cancel',
+                            style: 'cancel',
+                            onPress: () => console.log('Cancel Pressed')
+                        },
+                        {
+                            text: 'OK',
+                            onPress: () => props.favorite ?
+                                console.log('already set as favorite') : props.markFavorite()
+                        }
+                    ],
+                    { cancelable: false}
+                );
+            }
+            return true;
+        }
+    });
     
     if(campsite) {
         return (
-            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000} {...panResponder.panHandlers}>
                 <Card featuredTitle={name} 
                 image={{uri: baseUrl + image}}>
                     <Text style={{margin:10}}>
