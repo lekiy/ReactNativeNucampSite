@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
+    "@react-native-community/netinfo": "^5.9.5",
     "expo": "~38.0.8",
     "expo-image-picker": "^8.3.0",
     "expo-mail-composer": "^8.2.1",
